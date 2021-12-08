@@ -6,7 +6,7 @@ using UnityEngine;
 public class SlideController : MonoBehaviour
 {
     [SerializeField] private List<Slide> _slides = new List<Slide>();
-    private int _currentSlideIndex = -1;
+    public int _currentSlideIndex = -1;
 
     [Header("All slides will have the same transition time")]
     [SerializeField] private bool _globalTimeTransition = true;
@@ -30,6 +30,17 @@ public class SlideController : MonoBehaviour
     {
         NextSlide(null);
     }
+
+    public void LastSlide()
+    {
+        LastSlide(null);
+    }
+
+    public void XSlide(Slide slide)
+    {
+        XSlide(null, slide);
+    }
+
 
     public void NextSlide(Action onNewSlide)
     {
@@ -106,4 +117,113 @@ public class SlideController : MonoBehaviour
 
     }
 
+    public void LastSlide(Action onNewSlide)
+    {
+
+        if (GlobalTimeTransition)
+        {
+            _slides[_currentSlideIndex].Hide(() => { ShowLastSlideCallback(onNewSlide); }, TransitionDuration);
+        }
+        else
+        {
+            _slides[_currentSlideIndex].Hide(() => { ShowLastSlideCallback(onNewSlide); });
+
+        }
+
+    }
+    private void ShowLastSlideCallback(Action onNewSlide)
+    {
+        _currentSlideIndex = (_currentSlideIndex - 1) % _slides.Count;
+        if (_slides[_currentSlideIndex].AutoTransition)
+        {
+            _slides[_currentSlideIndex].OnSlideHidden.AddListener(GoToLastSlide);
+        }
+
+        if (GlobalTimeTransition)
+        {
+            _slides[_currentSlideIndex].Show(onNewSlide, TransitionDuration);
+        }
+        else
+        {
+            _slides[_currentSlideIndex].Show(onNewSlide);
+        }
+    }
+
+    private void GoToLastSlide()
+    {
+
+        _slides[_currentSlideIndex].OnSlideHidden.RemoveListener(GoToLastSlide);
+
+        _currentSlideIndex = (_currentSlideIndex - 1) % _slides.Count;
+        if (_currentSlideIndex == 0) { return; };
+        if (_slides[_currentSlideIndex].AutoTransition)
+        {
+            _slides[_currentSlideIndex].OnSlideHidden.AddListener(GoToLastSlide);
+        }
+
+        if (GlobalTimeTransition)
+        {
+            _slides[_currentSlideIndex].Show(null, TransitionDuration);
+        }
+        else
+        {
+            _slides[_currentSlideIndex].Show(null);
+        }
+
+    }
+
+    public void XSlide(Action onNewSlide, Slide slide)
+    {
+        if (GlobalTimeTransition)
+        {
+            _slides[_currentSlideIndex].Hide(() => { ShowXSlideCallBack(onNewSlide, slide); }, TransitionDuration);
+            _currentSlideIndex = _slides.IndexOf(slide);
+        }
+        else
+        {
+            _slides[_currentSlideIndex].Hide(() => { ShowXSlideCallBack(onNewSlide, slide); });
+            _currentSlideIndex = _slides.IndexOf(slide);
+        }
+    }
+
+    public void ShowXSlideCallBack(Action onNewSlide, Slide slide)
+    {
+        _currentSlideIndex = _slides.FindIndex(a => a == slide) % _slides.Count;
+        if (_slides[_currentSlideIndex].AutoTransition)
+        {
+            _slides[_currentSlideIndex].OnSlideHidden.AddListener(GoToNextSlide);
+        }
+
+        if (GlobalTimeTransition)
+        {
+            _slides[_currentSlideIndex].Show(onNewSlide, TransitionDuration);
+        }
+        else
+        {
+            _slides[_currentSlideIndex].Show(onNewSlide);
+        }
+    }
+
+    private void GoToXSlide()
+    {
+
+        _slides[_currentSlideIndex].OnSlideHidden.RemoveListener(GoToXSlide);
+
+        _currentSlideIndex = (_currentSlideIndex - 1) % _slides.Count;
+        if (_currentSlideIndex == 0) { return; };
+        if (_slides[_currentSlideIndex].AutoTransition)
+        {
+            _slides[_currentSlideIndex].OnSlideHidden.AddListener(GoToXSlide);
+        }
+
+        if (GlobalTimeTransition)
+        {
+            _slides[_currentSlideIndex].Show(null, TransitionDuration);
+        }
+        else
+        {
+            _slides[_currentSlideIndex].Show(null);
+        }
+
+    }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 public class SlidesEditor : Editor
 {
 
@@ -36,3 +37,4 @@ public class SlideControllerEditor : Editor
             myScript.TransitionDuration = EditorGUILayout.FloatField("Transition Duration", myScript.TransitionDuration);
     }
 }
+#endif

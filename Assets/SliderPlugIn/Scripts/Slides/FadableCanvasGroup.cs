@@ -10,6 +10,7 @@ public class FadableCanvasGroup : MonoBehaviour
 {
     [Header("Will be used if controller isn't set to Global")]
     [SerializeField] private float _fadeDuration = 0.5f;
+    private float _waitDuration = 0.0f;
 
     private CanvasGroup _canvasGroup;
 
@@ -34,11 +35,13 @@ public class FadableCanvasGroup : MonoBehaviour
         StartCoroutine(FadeCoroutine(true));
     }
 
-    public void FadeIn(float duration)
+    public void FadeIn(float duration,float waitTime)
     {
         _fadeDuration = duration;
+        _waitDuration = waitTime;
         FadeIn();
     }
+
 
     public void FadeOut()
     {
@@ -57,6 +60,7 @@ public class FadableCanvasGroup : MonoBehaviour
 
     private IEnumerator FadeCoroutine(bool fadeIn)
     {
+        yield return new WaitForSeconds(_waitDuration);
         var currentTime = 0f;
         var startValue = _canvasGroup.alpha;
         var endValue = fadeIn ? 1f : 0f;
@@ -77,7 +81,8 @@ public class FadableCanvasGroup : MonoBehaviour
         else
         {
             OnFadeOut?.Invoke();
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
+        _waitDuration = 0.0f;
     }
 }

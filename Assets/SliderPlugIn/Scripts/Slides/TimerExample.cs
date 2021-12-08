@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class TimerExample : MonoBehaviour
 {
-    [SerializeField] TimedSlide _timedSlide;
-    [SerializeField] Text _text;
+    [SerializeField] TimedSlide _timedSlide = null;
+    [SerializeField] Text _text = null;
     private float _time;
 
 

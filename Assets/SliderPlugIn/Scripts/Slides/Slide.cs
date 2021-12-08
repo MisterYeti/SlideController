@@ -16,7 +16,7 @@ public class Slide : MonoBehaviour
     [Header("Event triggered when the canvas is fully hidden")]
     public UnityEvent OnSlideHidden;
 
-    [SerializeField,HideInInspector] protected bool _autoTransition = false;
+    [SerializeField] protected bool _autoTransition = true;
     private Action _userActionOnFade;
 
 
@@ -47,7 +47,7 @@ public class Slide : MonoBehaviour
         _userActionOnFade = onShow;
         _fadable.OnFadeIn.RemoveListener(TriggerSlideShowEvent);
         _fadable.OnFadeIn.AddListener(TriggerSlideShowEvent);
-        _fadable.FadeIn(duration);
+        _fadable.FadeIn(duration,0f);
     }
 
     public virtual void Show(Action onShow)

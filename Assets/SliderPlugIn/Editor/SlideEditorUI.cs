@@ -12,7 +12,6 @@ public enum ESlideType
     Slide,
     VideoSlide,
     TimedSlide,
-    ARSlide
 }
 
 public enum EFontStyle
@@ -324,8 +323,6 @@ public class SlideEditorUI
                 GUILayoutExtension.DrawHorizontalLine("Slide options");
                 _timeBeforeFadeOut = EditorGUILayout.FloatField("Step duration : ", _timeBeforeFadeOut);
                 break;
-            case ESlideType.ARSlide:
-                break;
             default:
                 break;
         }
@@ -358,10 +355,6 @@ public class SlideEditorUI
                 var timedSlide = go.AddComponent<TimedSlide>();
                 InitGlobalStepOptions(timedSlide);
                 timedSlide.TimeBeforeFadeOut = _timeBeforeFadeOut;
-                break;
-            case ESlideType.ARSlide:
-                var arSlide = go.AddComponent<ARSlide>();
-                InitGlobalStepOptions(arSlide);
                 break;
             default:
                 break;
