@@ -81,7 +81,7 @@ public class FadableCanvasGroup : MonoBehaviour
         else
         {
             OnFadeOut?.Invoke();
-            //gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
         _waitDuration = 0.0f;
     }
